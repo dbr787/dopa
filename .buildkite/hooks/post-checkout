@@ -1,1 +1,2 @@
 echo "This is an example of a post-checkout hook from .buildkite/hooks/post-checkout"
+echo "yes sir/mam it is"
