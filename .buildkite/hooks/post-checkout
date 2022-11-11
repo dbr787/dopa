@@ -1,1 +1,11 @@
+#!/bin/bash
+
+set -euo pipefail
+
 echo "This is an example of a post-checkout hook from .buildkite/hooks/post-checkout"
+
+OPA_IMAGE_NAME=${BUILDKITE_OPA_IMAGE_NAME:-"openpolicyagent/opa"}
+OPA_IMAGE_VERSION=${BUILDKITE_OPA_IMAGE_VERSION:-"latest"}
+OPA_IMAGE="${OPA_IMAGE_NAME}:${OPA_IMAGE_VERSION}"
+
+docker pull $OPA_IMAGE --quiet
