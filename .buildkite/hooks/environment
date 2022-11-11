@@ -1,0 +1,1 @@
+echo "This is an example of an environment hook from .buildkite/hooks/environment"
