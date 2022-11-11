@@ -31,4 +31,6 @@ function inline_image {
 
 inline_image 'artifact://artifacts/image.gif' 'Rainbows'
 
-echo "${BUILDKITE_PIPELINE_SLUG}"
+echo "${BUILDKITE_BUILD_URL}"
+echo "https://api.buildkite.com/v2/organizations/${BUILDKITE_ORGANIZATION_SLUG}/pipelines/${BUILDKITE_PIPELINE_SLUG}/builds/${BUILDKITE_BUILD_NUMBER}"
+# curl "https://api.buildkite.com/v2/organizations/${BUILDKITE_ORGANIZATION_SLUG}/pipelines/${BUILDKITE_PIPELINE_SLUG}/builds/${BUILDKITE_BUILD_NUMBER}"
