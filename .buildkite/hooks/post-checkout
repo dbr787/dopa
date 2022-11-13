@@ -1,11 +1,24 @@
-#!/bin/bash
-
 set -euo pipefail
-
-echo "This is an example of a post-checkout hook from .buildkite/hooks/post-checkout"
 
 OPA_IMAGE_NAME=${BUILDKITE_OPA_IMAGE_NAME:-"openpolicyagent/opa"}
 OPA_IMAGE_VERSION=${BUILDKITE_OPA_IMAGE_VERSION:-"latest"}
 OPA_IMAGE="${OPA_IMAGE_NAME}:${OPA_IMAGE_VERSION}"
 
 docker pull $OPA_IMAGE --quiet
+
+## Can use this to ensure a specific team did the thing
+# if [[ ":$BUILDKITE_BUILD_CREATOR_TEAMS:" != *":ops:"* ]]; then
+#   echo "You must be in the ops team to run a job on this agent"
+#   exit 1
+# fi
+
+# if [ $$(buildkite-agent step get "outcome" --step "policy-eval") == "failed" ]; then
+cat <<- YAML | buildkite-agent pipeline upload
+steps:
+    - block: "Approve"
+    prompt: "Fill out the details for release"
+    fields:
+        - text: "Release Name"
+        key: "release-name"
+YAML
+# fi

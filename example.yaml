@@ -1,0 +1,69 @@
+# Pipelines should be defined in terraform, and manual pipeline creation restricted.
+# Pipeline definitions will include mandatory steps at the beginning and/or end of a pipeline.
+# The `buildkite-agent pipeline upload` step will allow user-defined pipelines to be created and stored
+#   in the project repository .buildkite/ directory - providing a 'shift-left' usage model.
+
+# For OPA, docker image could be included in image or pulled in agent bootstrap.
+# Evaluation scripts and policies could be cloned from a central repository
+
+# What about a 'policy' agent queue/stack, in which the image/bootstrap includes a running OPA server.
+# We can modify the agent checkout hook on the 'policy' stack to 
+
+# TODO
+# Block step to allow continue on policy eval failure, only on non-production branches
+# Test looping error code 1, 2, and 3, and having conditional block step based on error code?
+# Annotate results
+
+## Repository Hook Order
+# 01. post-checkout
+# 02. pre-command
+# 03. command
+# 04. post-command
+# 05. pre-artifact
+# 06. post-artifact
+# 07. pre-exit
+
+steps:
+
+  ##############################
+  # Initial Enforced Steps
+  ##############################
+
+  # Evaluate OPA Policies
+  - label: ":mag: policy evaluation"
+    key: "policy-eval"
+    command: "policy/eval.sh"
+    # agents:
+      # queue: "policy"
+
+  - label: "Block only if policy evaluation fails"
+    depends_on: "policy-eval"
+    command: |
+      if [ $$(buildkite-agent step get "outcome" --step "policy-eval") == "failed" ]; then
+        cat <<- YAML | buildkite-agent pipeline upload
+        steps:
+          - block: "Approve"
+            prompt: "Fill out the details for release"
+            fields:
+              - text: "Release Name"
+                key: "release-name"
+      YAML
+      fi
+
+  # Ensure all previous steps have successfully completed in order to continue.
+  - wait
+
+  ##############################
+  # Allow user-defined steps to now be uploaded
+  ##############################
+
+  # Allow user-defined pipeline steps to be uploaded  
+  - label: ":pipeline: user"
+    command: "buildkite-agent pipeline upload"
+
+  ##############################
+  # Final enforced steps
+  ##############################
+
+  - label: ":checkered_flag: final"
+    command: "buildkite-agent pipeline upload"

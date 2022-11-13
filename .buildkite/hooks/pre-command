@@ -1,10 +1,7 @@
-#!/bin/bash
 set -euo pipefail
 
 # Create the environment variable that needs to be uploaded
 GIT_SHORT_HASH=$(git log -1 --pretty=%h)
 
-# export created environment variables (we do this separately, see: https://github.com/koalaman/shellcheck/wiki/SC2155)
+# Export created environment variables
 export GIT_SHORT_HASH
-
-# echo "This is an example of a pre-command hook from .buildkite/hooks/pre-command"
