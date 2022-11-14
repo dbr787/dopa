@@ -6,13 +6,24 @@
 # For OPA, docker image could be included in image or pulled in agent bootstrap.
 # Evaluation scripts and policies could be cloned from a central repository
 
+# OR
 # What about a 'policy' agent queue/stack, in which the image/bootstrap includes a running OPA server.
-# We can modify the agent checkout hook on the 'policy' stack to 
+# First step in UI yaml is to clone and run policies, then a wait step
+
+# OR
+# First UI-defined pipeline step runs a plugin to override the command hook/checkout of the repo.
+#   This command could instead clone the policy repo? 
+
+# OR
+# Can we run pipeline upload in an agent hook, not really cos it runs on every job/step? right?
 
 # TODO
 # Block step to allow continue on policy eval failure, only on non-production branches
 # Test looping error code 1, 2, and 3, and having conditional block step based on error code?
 # Annotate results
+
+# QUESTIONS
+# Where should I clone the policy repo?
 
 ## Repository Hook Order
 # 01. post-checkout

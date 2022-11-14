@@ -13,8 +13,9 @@ docker pull $OPA_IMAGE --quiet
 # fi
 
 # if [ $$(buildkite-agent step get "outcome" --step "policy-eval") == "failed" ]; then
-cat <<- YAML | buildkite-agent pipeline upload
-- label: ":pipeline: Hook Upload"
-  command: "buildkite-agent pipeline upload"
-YAML
+# cat <<- YAML | buildkite-agent pipeline upload
+# - label: ":pipeline: Hook Upload"
+#   command: "buildkite-agent pipeline upload"
+# - wait
+# YAML
 # fi
