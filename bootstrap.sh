@@ -11,6 +11,7 @@ cat <<EOF >>/etc/buildkite-agent/hooks/pre-bootstrap
 set -eo pipefail
 # Created on $(date)
 echo "pre-bootstrap hook executed successfully"
+buildkite-agent annotate "pre-bootstrap hook executed successfully 🚀"
 EOF
 
 echo "Changing permissions on pre-bootstrap hook"
