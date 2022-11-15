@@ -15,4 +15,3 @@ echo "--- :package: Starting OPA Server"
 
 
 echo "--- :package: Evaluating Policies"
-
