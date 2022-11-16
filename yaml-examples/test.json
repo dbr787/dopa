@@ -1,0 +1,26 @@
+{
+  "steps": [
+    {
+      "label": ":hammer: Example Script",
+      "command": "script.sh",
+      "artifact_paths": "artifacts/*",
+      "agents": {
+        "queue": "default"
+      },
+      "priority": 0
+    },
+    "wait",
+    {
+      "label": "Priority One",
+      "command": "echo I Was Originally Priority One",
+      "priority": "1"
+    },
+    {
+      "label": "Priority None",
+      "command": "echo I Was Originally Priority None"
+    },
+    {
+      "block": ":shipit: Release"
+    }
+  ]
+}
