@@ -3,7 +3,7 @@ set -eo pipefail
 echo "+++ :hammer: Running Custom Pipeline Upload"
 
 OVERRIDE_PRIORITY=-1
-docker run --rm -v "${PWD}":/workdir mikefarah/yq -C "(.steps[] | select(has(\"command\"))).priority = $OVERRIDE_PRIORITY" ./pipeline.yml
+docker run --rm -v "${PWD}":/workdir mikefarah/yq -C "(.steps[] | select(has(\"command\"))).priority = $OVERRIDE_PRIORITY" .buildkite/pipeline.yml
 buildkite-agent pipeline upload --dry-run | docker run --rm -v "${PWD}":/workdir mikefarah/yq -C "(.steps[] | select(has(\"command\"))).priority = $OVERRIDE_PRIORITY" | buildkite-agent pipeline upload
 
 # docker run --rm -v "${PWD}":/workdir mikefarah/yq \
