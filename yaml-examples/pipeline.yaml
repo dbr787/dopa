@@ -1,0 +1,11 @@
+steps:
+  - name: First
+    some_value: One
+    one_more: Four
+    elements:
+      first: e
+  - name: Second
+    some_value: Two
+    elements:
+      first: a
+      second: b

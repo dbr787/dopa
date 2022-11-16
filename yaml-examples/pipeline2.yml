@@ -1,0 +1,16 @@
+agents:
+  queue: "default"
+
+steps:
+  - label: ":hammer: Example Script"
+    command: "script.sh"
+    artifact_paths: "artifacts/*"
+    agents:
+      queue: "${BUILDKITE_AGENT_META_DATA_QUEUE:-default}"
+  - command: "echo I Was Originally Priority One"
+    label: "Priority One"
+    priority: "1"
+  - label: "Priority None"
+    command: "echo I Was Originally Priority None"
+  - wait
+  - block: ":shipit: Release"
