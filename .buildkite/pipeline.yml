@@ -4,9 +4,8 @@ steps:
     artifact_paths: "artifacts/*"
     agents:
       queue: "${BUILDKITE_AGENT_META_DATA_QUEUE:-default}"
-  - label: ":hammer: Priority One"
+  - label: "Priority One"
     command: "echo I Was Originally Priority One"
-    priority: 1
-      queue: "${BUILDKITE_AGENT_META_DATA_QUEUE:-default}"
-  - label: ":hammer: Priority None"
+    priority: "1"
+  - label: "Priority None"
     command: "echo I Was Originally Priority None"
