@@ -12,9 +12,9 @@ docker run --rm -v "${PWD}":/workdir mikefarah/yq -C "(.steps[] | select(has(\"c
 echo "buildkite-agent pipeline upload dry-run"
 buildkite-agent pipeline upload --dry-run
 echo "buildkite-agent pipeline upload dry-run output to file"
-buildkite-agent pipeline upload --dry-run > tmp/pipeline_output.json
+buildkite-agent pipeline upload --dry-run > ./tmp/pipeline_output.json
 echo "yq pipeline json to yaml"
-docker run --rm -v "${PWD}":/workdir mikefarah/yq -P "." tmp/pipeline_output.json
+docker run --rm -v "${PWD}":/workdir mikefarah/yq -P "." ./tmp/pipeline_output.json
 #  | docker run --rm -v "${PWD}":/workdir mikefarah/yq -C "(.steps[] | select(has(\"command\"))).priority = $OVERRIDE_PRIORITY"
 
 
