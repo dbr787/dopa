@@ -11,9 +11,9 @@ OVERRIDE_PRIORITY=-1
 docker run --rm -v "${PWD}":/workdir mikefarah/yq -C "(.steps[] | select(has(\"command\"))).priority = $OVERRIDE_PRIORITY" .buildkite/pipeline.yml
 echo "buildkite-agent pipeline upload dry-run"
 buildkite-agent pipeline upload --dry-run
+json_pipeline=$(buildkite-agent pipeline upload --dry-run)
 echo "dry-run pipe into yq replace"
-buildkite-agent pipeline upload --dry-run | docker run --rm -v "${PWD}":/workdir mikefarah/yq -P '.' | docker run --rm -v "${PWD}":/workdir mikefarah/yq -C "(.steps[] | select(has(\"command\"))).priority = $OVERRIDE_PRIORITY"
-
+echo $json_pipeline | docker run --rm -v "${PWD}":/workdir mikefarah/yq -P '.' | docker run --rm -v "${PWD}":/workdir mikefarah/yq -C "(.steps[] | select(has(\"command\"))).priority = $OVERRIDE_PRIORITY"
 
 
 # buildkite-agent pipeline upload --dry-run | docker run --rm -v "${PWD}":/workdir mikefarah/yq -C "(.steps[] | select(has(\"command\"))).priority = $OVERRIDE_PRIORITY" | buildkite-agent pipeline upload
