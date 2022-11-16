@@ -2,6 +2,7 @@ set -eo pipefail
 
 # Create yq alias in bootstrap
 # Try overriding using JSON file
+# Issue using yq and emojis https://github.com/mikefarah/yq/issues/814
 
 echo "+++ :hammer: Running Custom Pipeline Upload"
 
@@ -14,7 +15,8 @@ cat pipeline_output.json
 
 echo "yq json file to override output file"
 OVERRIDE_PRIORITY="-1"
-docker run --rm -v "${PWD}":/workdir mikefarah/yq -C "(.steps[] | select(has(\"command\"))).priority = \"$OVERRIDE_PRIORITY\"" pipeline_output.json > override_output.json
+# docker run --rm -v "${PWD}":/workdir mikefarah/yq -C "(.steps[] | select(has(\"command\"))).priority = \"$OVERRIDE_PRIORITY\"" pipeline_output.json > override_output.json
+docker run --rm -v "${PWD}":/workdir mikefarah/yq -o=json "(.steps[] | select(has(\"command\"))).priority = \"$OVERRIDE_PRIORITY\"" pipeline_output.json > override_output.json
 cat override_output.json
 
 echo "upload override file"
