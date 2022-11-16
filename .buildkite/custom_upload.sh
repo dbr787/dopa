@@ -14,15 +14,12 @@ buildkite-agent pipeline upload --dry-run > pipeline_output.json
 cat pipeline_output.json
 
 echo "yq json file to override output file"
-OVERRIDE_PRIORITY="-1"
-# docker run --rm -v "${PWD}":/workdir mikefarah/yq -C "(.steps[] | select(has(\"command\"))).priority = \"$OVERRIDE_PRIORITY\"" pipeline_output.json > override_output.json
-docker run --rm -v "${PWD}":/workdir mikefarah/yq -o=json "(.steps[] | select(has(\"command\"))).priority = \"$OVERRIDE_PRIORITY\"" pipeline_output.json > override_output.json
+OVERRIDE_PRIORITY=-1
+docker run --rm -v "${PWD}":/workdir mikefarah/yq -o=json "(.steps[] | select(has(\"command\"))).priority = $OVERRIDE_PRIORITY" pipeline_output.json > override_output.json
 cat override_output.json
 
 echo "upload override file"
 buildkite-agent pipeline upload override_output.json
-
-
 
 
 # echo "yq pipeline.yml"
