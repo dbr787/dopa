@@ -16,6 +16,11 @@ buildkite-agent pipeline upload --dry-run > pipeline_output.json
 echo "yq pipeline json to yaml"
 docker run --rm -v "${PWD}":/workdir mikefarah/yq -P "." pipeline_output.json > pipeline_output.yaml
 cat pipeline_output.yaml
+echo "override priority in new yaml"
+OVERRIDE_PRIORITY=-1
+docker run --rm -v "${PWD}":/workdir mikefarah/yq -C "(.steps[] | select(has(\"command\"))).priority = $OVERRIDE_PRIORITY" pipeline_output.yaml > pipeline_override.yaml
+
+
 #  | docker run --rm -v "${PWD}":/workdir mikefarah/yq -C "(.steps[] | select(has(\"command\"))).priority = $OVERRIDE_PRIORITY"
 # OVERRIDE_PRIORITY=-1
 # docker run --rm -v "${PWD}":/workdir mikefarah/yq -C "(.steps[] | select(has(\"command\"))).priority = $OVERRIDE_PRIORITY" pipeline_output.json
