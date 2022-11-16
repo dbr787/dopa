@@ -1,8 +1,8 @@
 set -eo pipefail
 
+# Create yq alias in bootstrap
+
 echo "+++ :hammer: Running Custom Pipeline Upload"
-
-
 
 echo "original pipeline.yml"
 docker run --rm -v "${PWD}":/workdir mikefarah/yq -C "." .buildkite/pipeline.yml
@@ -12,7 +12,10 @@ docker run --rm -v "${PWD}":/workdir mikefarah/yq -C "(.steps[] | select(has(\"c
 echo "buildkite-agent pipeline upload dry-run"
 buildkite-agent pipeline upload --dry-run
 echo "dry-run pipe into yq replace"
-buildkite-agent pipeline upload --dry-run | docker run --rm -v "${PWD}":/workdir mikefarah/yq -C "(.steps[] | select(has(\"command\"))).priority = $OVERRIDE_PRIORITY"
+buildkite-agent pipeline upload --dry-run | docker run --rm -v "${PWD}":/workdir mikefarah/yq -P '.' | docker run --rm -v "${PWD}":/workdir mikefarah/yq -C "(.steps[] | select(has(\"command\"))).priority = $OVERRIDE_PRIORITY"
+
+
+
 # buildkite-agent pipeline upload --dry-run | docker run --rm -v "${PWD}":/workdir mikefarah/yq -C "(.steps[] | select(has(\"command\"))).priority = $OVERRIDE_PRIORITY" | buildkite-agent pipeline upload
 
 # docker run --rm -v "${PWD}":/workdir mikefarah/yq \
