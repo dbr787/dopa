@@ -1,0 +1,10 @@
+steps:
+
+  ##############################
+  # Initial Enforced Steps
+  ##############################
+
+  # Evaluate OPA Policies
+  - label: ":mag: policy evaluation"
+    key: "policy-eval"
+    command: "policy/eval.sh"
