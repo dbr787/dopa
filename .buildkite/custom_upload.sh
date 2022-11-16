@@ -21,8 +21,10 @@ echo "cat pipeline_override.yaml"
 OVERRIDE_PRIORITY="-1"
 docker run --rm -v "${PWD}":/workdir mikefarah/yq -C "(.steps[] | select(has(\"command\"))).priority = \"$OVERRIDE_PRIORITY\"" pipeline_output.yaml > pipeline_override.yaml
 cat pipeline_override.yaml
-echo "upload pipeline with overrides"
-buildkite-agent pipeline upload pipeline_override.yaml
+# echo "upload pipeline with overrides"
+# buildkite-agent pipeline upload pipeline_override.yaml
+echo "upload pipeline json"
+buildkite-agent pipeline upload pipeline_output.json
 # buildkite-agent pipeline upload
 #  | docker run --rm -v "${PWD}":/workdir mikefarah/yq -C "(.steps[] | select(has(\"command\"))).priority = $OVERRIDE_PRIORITY"
 # OVERRIDE_PRIORITY=-1
