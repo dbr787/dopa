@@ -14,8 +14,11 @@ buildkite-agent pipeline upload --dry-run
 echo "buildkite-agent pipeline upload dry-run output to file"
 buildkite-agent pipeline upload --dry-run > pipeline_output.json
 echo "yq pipeline json to yaml"
-docker run --rm -v "${PWD}":/workdir mikefarah/yq -P "." pipeline_output.json
+docker run --rm -v "${PWD}":/workdir mikefarah/yq -P "." pipeline_output.json > pipeline_output.yaml
+cat pipeline_output.yaml
 #  | docker run --rm -v "${PWD}":/workdir mikefarah/yq -C "(.steps[] | select(has(\"command\"))).priority = $OVERRIDE_PRIORITY"
+# OVERRIDE_PRIORITY=-1
+# docker run --rm -v "${PWD}":/workdir mikefarah/yq -C "(.steps[] | select(has(\"command\"))).priority = $OVERRIDE_PRIORITY" pipeline_output.json
 
 
 # buildkite-agent pipeline upload --dry-run | docker run --rm -v "${PWD}":/workdir mikefarah/yq -C "(.steps[] | select(has(\"command\"))).priority = $OVERRIDE_PRIORITY" | buildkite-agent pipeline upload
