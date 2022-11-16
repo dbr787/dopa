@@ -2,9 +2,18 @@ set -eo pipefail
 
 echo "+++ :hammer: Running Custom Pipeline Upload"
 
+
+
+echo "original pipeline.yml"
+docker run --rm -v "${PWD}":/workdir mikefarah/yq -C "." .buildkite/pipeline.yml
+echo "override priority"
 OVERRIDE_PRIORITY=-1
 docker run --rm -v "${PWD}":/workdir mikefarah/yq -C "(.steps[] | select(has(\"command\"))).priority = $OVERRIDE_PRIORITY" .buildkite/pipeline.yml
-buildkite-agent pipeline upload --dry-run | docker run --rm -v "${PWD}":/workdir mikefarah/yq -C "(.steps[] | select(has(\"command\"))).priority = $OVERRIDE_PRIORITY" | buildkite-agent pipeline upload
+echo "buildkite-agent pipeline upload dry-run"
+buildkite-agent pipeline upload --dry-run
+echo "dry-run pipe into yq replace"
+buildkite-agent pipeline upload --dry-run | docker run --rm -v "${PWD}":/workdir mikefarah/yq -C "(.steps[] | select(has(\"command\"))).priority = $OVERRIDE_PRIORITY"
+# buildkite-agent pipeline upload --dry-run | docker run --rm -v "${PWD}":/workdir mikefarah/yq -C "(.steps[] | select(has(\"command\"))).priority = $OVERRIDE_PRIORITY" | buildkite-agent pipeline upload
 
 # docker run --rm -v "${PWD}":/workdir mikefarah/yq \
 # '.steps[] *=n load("defaults.yaml").steps' \
