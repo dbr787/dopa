@@ -18,7 +18,7 @@ docker run --rm -v "${PWD}":/workdir mikefarah/yq -C "(.steps[] | select(has(\"c
 cat override_output.json
 
 echo "upload override file"
-buildkite-agent pipeline upload pipeline_override.yaml
+buildkite-agent pipeline upload override_output.json
 
 
 
