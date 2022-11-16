@@ -1,8 +1,10 @@
 set -eo pipefail
 
 # Create yq alias in bootstrap
-# Try overriding using JSON file
-# Issue using yq and emojis https://github.com/mikefarah/yq/issues/814
+# Add if statements for relevant BUILDKITE_VARS
+# Use script as an agent hook
+# Could instead be a plugin?
+# Could alias/wrap the buildkite-agent pipeline upload command
 
 echo "+++ :hammer: Running Custom Pipeline Upload"
 
